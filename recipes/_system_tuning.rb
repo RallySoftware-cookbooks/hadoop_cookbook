@@ -1,3 +1,4 @@
+# coding: utf-8
 #
 # Cookbook Name:: hadoop
 # Recipe:: _system_tuning
@@ -27,10 +28,9 @@ sysctl_param 'vm.swappiness' do
 end
 
 # select transparent_hugepage file
-case node['platform_family']
-when 'debian', 'suse'
+if ['debian', 'suse'].include? node['platform_family'] || 'centos' == node['platform']
   thp_defrag = '/sys/kernel/mm/transparent_hugepage/defrag'
-when 'rhel'
+elsif 'rhel' == node['platform']
   thp_defrag = '/sys/kernel/mm/redhat_transparent_hugepage/defrag'
 end
 
